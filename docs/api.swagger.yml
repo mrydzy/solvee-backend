@@ -1,0 +1,188 @@
+swagger: '2.0'
+info:
+  title: Comments API
+  description: Comments API
+  version: 0.0.2
+  contact:
+    name: STP BT Team
+    email: bt@schibsted.pl
+    url: http://www.schibsted.pl
+host: api-comments.i.bt.no
+schemes:
+  - http
+basePath: /api/v1
+consumes:
+  - application/json
+produces:
+  - application/json
+responses:
+  404:
+    description: Resource (ex. publication, content) don't exists
+    schema:
+      $ref: '#/definitions/Error'
+  406:
+    description: If `Accept` header don't have `application/json` value
+    schema:
+      $ref: '#/definitions/Error'
+paths:
+  /:
+    get:
+      summary: Redirect to www.bt.no
+      responses:
+        200:
+          description: Redirect
+  /publications:
+    get:
+      summary: Publication list
+      responses:
+        200:
+          description: An array of publications
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Publication'
+        406:
+          $ref: '#/responses/406'
+  /publications/{publicationId}/{contentUri}/comments:
+    parameters:
+      - name: publicationId
+        in: path
+        description: Publication ID
+        required: true
+        type: string
+      - name: contentUri
+        in: path
+        description: Content URI (identificator), ex. `escenic:article:123`
+        required: true
+        type: string
+    get:
+      summary: Get most recent comments
+      parameters:
+        - name: limit
+          in: query
+          description: Limit
+          required: false
+          type: number
+        - name: offset
+          in: query
+          description: Offset
+          required: false
+          type: number
+        - name: sort
+          in: query
+          description: Sort field, ex. `-created_at`
+          required: false
+          type: string
+      responses:
+        200:
+          description: An array of comments
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+                description: Number of comments
+              items:
+                $ref: '#/definitions/Comment'
+        204:
+          description: Content without comments
+        404:
+          $ref: '#/responses/404'
+        406:
+          $ref: '#/responses/406'
+        410:
+          description: Gone
+    post:
+      summary: Add comment
+      responses:
+        201:
+          description: Created
+        404:
+          $ref: '#/responses/404'
+        406:
+          $ref: '#/responses/406'
+  # /publications/{publicationId}/{contentUri}/comments/{commentId}/replies:
+  #   parameters:
+  #     - name: publicationId
+  #       in: path
+  #       description: Publication ID
+  #       required: true
+  #       type: string
+  #     - name: contentUri
+  #       in: path
+  #       description: Content URI (identificator), ex. `escenic:article:123`
+  #       required: true
+  #       type: string
+  #     - name: commentId
+  #       in: path
+  #       description: Comment Id
+  #       required: true
+  #       type: string
+  #   get:
+  #     description: TODO
+  #     responses:
+  #       200:
+  #         description: TODO
+definitions:
+  User:
+    required:
+      - id
+#      - name
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+  Comment:
+    allOf:
+      - $ref: '#/definitions/NewComment'
+    required:
+      - id
+      - created_at
+      - user
+      - replies
+    properties:
+      id:
+        type: integer
+        format: int64
+      created_at:
+        type: integer
+      user:
+        $ref: '#/definitions/User'
+      replies:
+        type: array
+        items:
+          $ref: '#/definitions/Comment'
+  NewComment:
+    required:
+      - message
+      - parent_id
+      - user
+    properties:
+      message:
+        type: string
+      parent_id:
+        type: integer
+        description: Parent comment id
+      user:
+        $ref: '#/definitions/User'
+  Publication:
+    required:
+      - cannonical_name
+      - name
+    properties:
+      cannonical_name:
+        type: string
+        description: Short name, ex. BT, SA
+      name:
+        type: string
+        description: Long name, ex. Bergens Tidende
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+      message:
+        type: string

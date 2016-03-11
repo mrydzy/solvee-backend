@@ -1,0 +1,18 @@
+{
+  "development": {
+    "use_env_variable": "DATABASE_URI",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  },
+  "test": {
+    "use_env_variable": "DATABASE_URI",
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URI",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": true
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "name": "decisions-api",
+  "version": "1.0.0",
+  "description": "API for decisions system",
+  "main": "src/index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "check-node-version --node '>= 5.6.0' && jshint . && ./scripts/run-tests.sh",
+    "coverage": "jshint . && ./scripts/run-coverage.sh",
+    "postinstall": "./scripts/migrate-database.sh",
+    "db:seed": "./scripts/run-seeders.sh",
+    "lint": "jshint"
+  },
+  "author": "Marek Nogiec <marek@nogiec.org>",
+  "keywords": [
+    "api",
+    "decisions",
+    "system"
+  ],
+  "dependencies": {
+    "boom": "^2.10.1",
+    "bunyan": "^1.5.1",
+    "check-node-version": "^1.0.1",
+    "co": "^4.6.0",
+    "dotenv": "^2.0.0",
+    "faker": "^3.0.1",
+    "hapi": "^13.0.0",
+    "hapi-auth-bearer-token": "^4.0.0",
+    "hapi-bunyan": "^0.6.0",
+    "hapi-swagger": "^4.1.0",
+    "inert": "^3.2.0",
+    "joi": "^7.2.3",
+    "lodash": "^3.10.1",
+    "pg": "^4.4.4",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.19.2",
+    "sequelize-cli": "^2.2.1",
+    "spid-client-node": "^1.1.0",
+    "sqlizr": "^1.1.0",
+    "vision": "^4.0.1"
+  },
+  "devDependencies": {
+    "istanbul": "^0.4.0",
+    "jshint": "^2.8.0",
+    "mocha": "^2.4.5"
+  },
+  "engines": {
+    "node": ">= 5.6.0",
+    "npm": ">= 3.6.0"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "undef": true,
+  "unused": true,
+  "esnext": true,
+  "node": true,
+  "validthis": true,
+  "globals": {
+    "describe": false,
+    "it": false,
+    "before": false,
+    "beforeEach": false
+  }
+}

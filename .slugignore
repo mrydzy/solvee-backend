@@ -1,0 +1,6 @@
+docs/
+test/
+provision/
+README.md
+Vagrantfile
+.travis.yml
