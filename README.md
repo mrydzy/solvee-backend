@@ -4,9 +4,9 @@ Decisions API
 Quickstart
 ----------
 
-Before running local API you have to set `DATABASE_URI={databaseUri}` environment variable in order to connect with your postgres database, where `{databaseUri}` is your local/remote database uri.
+Before running local API you have to set `DATABASE_URL={databaseUri}` environment variable in order to connect with your postgres database, where `{databaseUri}` is your local/remote database uri.
 
-If you will choose local vagrant with postgres database from this repo, your `DATABASE_URI` will look like these: `postgres://dev:dev@localhost:5432/comments`
+If you will choose local vagrant with postgres database from this repo, your `DATABASE_URL` will look like these: `postgres://dev:dev@localhost:5432/comments`
 
 If you want to connect with some heroku remote database from your local machine, in addition to heroku database uri, you will need also `FORCE_DB_SSL=true`.
 
