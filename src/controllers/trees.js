@@ -25,6 +25,15 @@ class TreesController extends RouteController {
     });
     response(tree);
   }
+  update(request, response) {
+    const tree = this.models.Tree.update({
+      name: request.payload.name,
+      data: request.payload.data
+    }, {
+      where: { id : request.params.treeId }
+    });
+    response(tree);
+  }
 }
 
 module.exports = TreesController;

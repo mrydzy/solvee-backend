@@ -48,7 +48,26 @@ function setupRoute(server, options, next) {
           })
         }
       }
+    },{
+      method: 'PUT',
+      path: '/trees/{treeId}',
+      config: {
+        handler: treesController.update,
+        description: 'Update existing tree',
+        notes: 'Update tree',
+        tags: ['api'],
+        validate: {
+          params: Joi.object().keys({
+            treeId: Joi.number().integer().required().description('Tree ID')
+          }),
+          payload: Joi.object().keys({
+            name: Joi.string().required().min(1).max(1500),
+            data: Joi.any()
+          })
+        }
+      }
     }
+
   ]);
 
   next();
