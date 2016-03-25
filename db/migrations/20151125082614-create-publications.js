@@ -14,6 +14,9 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      userId: {
+        type: Sequelize.STRING
+      },
       data: {
         type: Sequelize.JSONB
       },

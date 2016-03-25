@@ -37,6 +37,7 @@ function setupRoute(server, options, next) {
       method: 'POST',
       path: '/trees',
       config: {
+        auth: 'token',
         handler: treesController.save,
         description: 'Save a tree',
         notes: 'Save tree',
@@ -52,6 +53,7 @@ function setupRoute(server, options, next) {
       method: 'PUT',
       path: '/trees/{treeId}',
       config: {
+        auth: 'token',
         handler: treesController.update,
         description: 'Update existing tree',
         notes: 'Update tree',

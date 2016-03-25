@@ -10,7 +10,7 @@ const LogService = require('./services/logs');
 const Database = require('./services/db');
 const Routing = require('./routes');
 const cfg = require('./../config/app');
-const AuthBearer = require('hapi-auth-bearer-token');
+const auth = require('./services/authJWT');
 
 
 const server = new Hapi.Server({
@@ -35,7 +35,7 @@ const plugins = [
     }
   },
   Database,
-  AuthBearer,
+  auth,
   Routing
 ];
 

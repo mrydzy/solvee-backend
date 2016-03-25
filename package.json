@@ -32,6 +32,7 @@
     "hapi-swagger": "^4.1.0",
     "inert": "^3.2.0",
     "joi": "^7.2.3",
+    "jsonwebtoken": "^5.7.0",
     "lodash": "^3.10.1",
     "pg": "^4.4.4",
     "pg-hstore": "^2.3.2",
