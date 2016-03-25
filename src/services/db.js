@@ -13,7 +13,7 @@ function setupDatabase (server, options, next) {
       ssl: !!process.env.FORCE_DB_SSL
     }
   };
-  const uri = process.env.DATABASE_URI || '';
+  const uri = process.env.DATABASE_URL || '';
   const sequelize = new Sequelize(uri, config);
   const models = options.models || 'src/models/**/*.js';
 
