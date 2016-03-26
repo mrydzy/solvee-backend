@@ -79,7 +79,7 @@ function setupRoute(server, options, next) {
             treeId: Joi.number().integer().required().description('Tree ID')
           }),
           payload: Joi.object().keys({
-            name: Joi.string().required()
+            name: Joi.string().required(),
             data: Joi.any().required()
           })
         }
