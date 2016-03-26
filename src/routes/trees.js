@@ -44,7 +44,6 @@ function setupRoute(server, options, next) {
         tags: ['api'],
         validate: {
           payload: Joi.object().keys({
-            name: Joi.string().required().min(1).max(1500),
             data: Joi.any()
           })
         }
@@ -63,7 +62,6 @@ function setupRoute(server, options, next) {
             treeId: Joi.number().integer().required().description('Tree ID')
           }),
           payload: Joi.object().keys({
-            name: Joi.string().required().min(1).max(150),
             data: Joi.any()
           })
         }

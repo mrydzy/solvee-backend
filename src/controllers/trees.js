@@ -21,7 +21,6 @@ class TreesController extends RouteController {
   save(request, response) {
     if (request.auth.isAuthenticated) {
       const tree = this.models.Tree.create({
-        name: request.payload.name,
         userId: request.auth.credentials.user,
         data: request.payload.data
       });
@@ -33,7 +32,6 @@ class TreesController extends RouteController {
   update(request, response) {
     if (request.auth.isAuthenticated) {
       const tree = this.models.Tree.update({
-        name: request.payload.name,
         data: request.payload.data
       }, {
         where: {
