@@ -32,6 +32,7 @@ class TreesController extends RouteController {
       userId: request.auth.credentials.user,
       data: treeData
     });
+    response(tree);
   }
   update(request, response) {
     if (!request.auth.isAuthenticated) {
@@ -44,11 +45,11 @@ class TreesController extends RouteController {
     const tree = this.models.Tree.update({
       data: treeData
     }, {
-      where: {
-        id: request.params.treeId,
-        userId: request.auth.credentials.user
-      }});
-      response(tree);
+    where: {
+      id: request.params.treeId,
+      userId: request.auth.credentials.user
+    }});
+    response(tree);
   }
 }
 
