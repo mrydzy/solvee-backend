@@ -20,19 +20,34 @@ class TreesController extends RouteController {
     });
     response(tree);
   }
+  getListForUser(request, response) {
+    const userId = request.params.userId;
+    this.models.Tree.findAndCountAll({
+      where: {
+        userId: userId
+      }
+    })
+      .then(data => {
+        response({
+          items: data.rows,
+          count: data.count
+        })
+      });
+  }
   save(request, response) {
-    const treeData = request.payload.data;
+    const data = request.payload.data;
+    const name = request.payload.name;
     if (!request.auth.isAuthenticated) {
       response(Boom.unauthorized());
     }
     if (!validate(treeData)) {
       response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth'));
     }
-    const tree = this.models.Tree.create({
+    this.models.Tree.create({
+      name: name,
       userId: request.auth.credentials.user,
-      data: treeData
-    });
-    response(tree);
+      data: data
+    }).then(response);
   }
   update(request, response) {
     if (!request.auth.isAuthenticated) {
@@ -45,10 +60,11 @@ class TreesController extends RouteController {
     const tree = this.models.Tree.update({
       data: treeData
     }, {
-    where: {
-      id: request.params.treeId,
-      userId: request.auth.credentials.user
-    }});
+      where: {
+        id: request.params.treeId,
+        userId: request.auth.credentials.user
+      }
+    });
     response(tree);
   }
 }

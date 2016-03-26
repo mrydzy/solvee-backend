@@ -20,6 +20,22 @@ function setupRoute(server, options, next) {
     },
     {
       method: 'GET',
+      path: '/users/{userId}/trees',
+      config: {
+        auth: 'token',
+        handler: treesController.getListForUser,
+        description: 'Tree list for user',
+        notes: 'Return trees for user',
+        tags: ['api'],
+        validate: {
+          params: Joi.object().keys({
+            userId: Joi.string().required().description('User ID')
+          })
+        }
+      }
+    },
+    {
+      method: 'GET',
       path: '/trees/{treeId}',
       config: {
         handler: treesController.getTree,
@@ -44,7 +60,8 @@ function setupRoute(server, options, next) {
         tags: ['api'],
         validate: {
           payload: Joi.object().keys({
-            data: Joi.any()
+            name: Joi.string().required(),
+            data: Joi.any().required()
           })
         }
       }
@@ -62,7 +79,8 @@ function setupRoute(server, options, next) {
             treeId: Joi.number().integer().required().description('Tree ID')
           }),
           payload: Joi.object().keys({
-            data: Joi.any()
+            name: Joi.string().required()
+            data: Joi.any().required()
           })
         }
       }

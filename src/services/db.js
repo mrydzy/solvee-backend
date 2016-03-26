@@ -25,7 +25,6 @@ function setupDatabase (server, options, next) {
   };
 
   server.expose('db', db);
-
   next();
 }
 

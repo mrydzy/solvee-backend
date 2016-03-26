@@ -68,6 +68,6 @@ server.connection({
   }
 });
 
-server.register(plugins, init);
+server.register(plugins).then(init);
 
 module.exports = server;
