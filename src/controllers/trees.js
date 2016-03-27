@@ -40,7 +40,7 @@ class TreesController extends RouteController {
     if (!request.auth.isAuthenticated) {
       response(Boom.unauthorized());
     }
-    if (!validate(treeData)) {
+    if (!validate(data)) {
       response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth'));
     }
     this.models.Tree.create({
@@ -58,11 +58,12 @@ class TreesController extends RouteController {
       response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth'));
     }
     const tree = this.models.Tree.update({
-      data: treeData
+      data: treeData,
+      name: request.payload.name
     }, {
       where: {
         id: request.params.treeId,
-        userId: request.auth.credentials.user
+        userId: request.auth.credentials.user,
       }
     });
     response(tree);

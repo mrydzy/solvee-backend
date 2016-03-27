@@ -4,9 +4,6 @@ const tooLongTreeIdRegex = new RegExp('id\\":([0-9]{7})+', 'g');
 
 function validateTree(treeString) {
   var tree = JSON.parse(treeString);
-  if (tree.title.length < 1) { //no title
-    return false;
-  }
   if (tree.options.length < 1) { //no nodes
     return false;
   }
