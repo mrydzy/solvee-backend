@@ -4,6 +4,9 @@ function setupRouting(server, options, next) {
   let routes = [
     {
       register: require('./trees')
+    },
+    {
+      register: require('./languages')
     }
   ];
 

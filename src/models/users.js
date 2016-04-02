@@ -4,14 +4,16 @@ function User(sequelize, DataTypes) {
   const fields = {
     email: DataTypes.STRING,
     name: DataTypes.STRING,
-    languageId: DataTypes.INTEGER
+    facebookId: DataTypes.STRING
   };
 
   const UserModel = sequelize.define('User', fields, {
     paranoid: true,
-    associate: (models) => {
-      UserModel.belongsTo(models.Language, {foreignKey: 'languageId', as: 'preferredLanguage'});
-      UserModel.hasMany(models.Tree, {foreignKey: 'userId', as: 'user'});
+    classMethods: {
+      associate: (models) => {
+        UserModel.belongsTo(models.Language);
+        UserModel.hasMany(models.Tree);
+      }
     }
   });
 

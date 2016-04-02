@@ -67,7 +67,7 @@ class TreesController extends RouteController {
     }, {
       where: {
         id: request.params.treeId,
-        userId: request.auth.credentials.user,
+        userId: request.auth.credentials.user
       }
     });
     response(tree);

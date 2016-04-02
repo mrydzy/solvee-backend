@@ -94,6 +94,6 @@ function setupRoute(server, options, next) {
 exports.register = setupRoute;
 
 exports.register.attributes = {
-  name: 'routes-publications',
+  name: 'routes-trees',
   version: '1.0.1'
 };

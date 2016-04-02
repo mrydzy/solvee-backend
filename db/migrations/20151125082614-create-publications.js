@@ -1,42 +1,11 @@
 'use strict';
 
-const DECISIONS_TABLE_NAME = 'Trees';
+const TREES_TABLE_NAME = 'Trees';
 const LANGUAGES_TABLE_NAME = "Languages";
 const USERS_TABLE_NAME = "Users";
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    const TreesTable = {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      name: {
-        type: Sequelize.STRING
-      },
-      language: {
-        type: Sequelize.INTEGER
-      },
-      userId: {
-        type: Sequelize.STRING
-      },
-      data: {
-        type: Sequelize.JSONB
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      deletedAt: {
-        type: Sequelize.DATE
-      }
-    };
 
     const LanguageTable = {
       name: {
@@ -55,6 +24,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      facebookId: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       name: {
         allowNull: false,
         type: Sequelize.STRING
@@ -63,9 +36,55 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
-      preferredLanguage: {
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      languageId: {
         allowNull: true,
-        lang: Sequelize.INTEGER
+        type: Sequelize.STRING,
+        references: {
+          model: 'Languages',
+          key: 'shortName'
+        }
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      deletedAt: {
+        type: Sequelize.DATE
+      }
+    };
+
+    const TreesTable = {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      name: {
+        type: Sequelize.STRING
+      },
+      data: {
+        type: Sequelize.JSONB
+      },
+      languageId: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        references: {
+          model: 'Languages',
+          key: 'shortName'
+        }
+      },
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,
@@ -79,12 +98,13 @@ module.exports = {
         type: Sequelize.DATE
       }
     };
-    queryInterface
-      .createTable(DECISIONS_TABLE_NAME, TreesTable);
+
     queryInterface
       .createTable(LANGUAGES_TABLE_NAME, LanguageTable);
+    queryInterface
+      .createTable(USERS_TABLE_NAME, UserTable);
     return queryInterface
-      .createTable(USERS_TABLE_NAME, LanguageTable);
+      .createTable(TREES_TABLE_NAME, TreesTable);
 
   },
 
