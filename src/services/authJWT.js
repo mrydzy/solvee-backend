@@ -3,6 +3,7 @@
 const Boom = require('boom');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const createUserIfNew = require('./users').createUserIfNew;
 
 const secret = process.env.APP_SECRET;
 
@@ -18,6 +19,7 @@ function register(server, options, next) {
 
     try {
       const credentials = verify(token);
+      createUserIfNew(server, credentials);
       return reply.continue({credentials});
     } catch (e) {
       return reply(Boom.unauthorized(new Error(e.message)));
@@ -44,7 +46,6 @@ register.attributes = {
 function sign(payload) {
   return jwt.sign(payload, secret);
 }
-
 
 // Verifies JWT and returns payload
 function verify(token) {

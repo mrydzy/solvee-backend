@@ -61,7 +61,7 @@ class TreesController extends RouteController {
     }
     this.models.Tree.create({
       name: name,
-      facebookId: request.auth.credentials.user,
+      facebookId: request.auth.credentials.id,
       data: data,
       languageId: lang
     }).then((tree) => {
