@@ -7,11 +7,17 @@ function createUserIfNew(server, user) {
   let dbClient = server.plugins[dbPluginName].db.sequelize; //TODO: constructor???? is how to do this?
   var models = dbClient.models;
 
-  models.User.create({
-    facebookId: user.id,
+  models.User.findOrCreate(
+  {
+    where: {
+      facebookId: user.id
+    },
+    defaults: {
     name: user.name,
     email: user.email
-  });
+  }
+  }
+  );
 }
 
 module.exports = {

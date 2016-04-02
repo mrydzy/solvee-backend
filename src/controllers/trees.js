@@ -73,17 +73,18 @@ class TreesController extends RouteController {
       response(Boom.unauthorized());
     }
     const treeData = request.payload.data;
-    if (!validateTree(data) || !validateLang(lang)) {
+    const lang = request.payload.lang;
+    if (!validateTree(treeData) || !validateLang(lang)) {
       response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth, request needs to have correct language.'));
     }
     const tree = this.models.Tree.update({
       data: treeData,
       name: request.payload.name,
-      languageId: request.lang
+      languageId: lang
     }, {
       where: {
         id: request.params.treeId,
-        facebookId: request.auth.credentials.user
+        facebookId: request.auth.credentials.id
       }
     });
     response(tree);
