@@ -2,7 +2,10 @@
 
 function Language(sequelize, DataTypes) {
   const fields = {
-    shortName: DataTypes.STRING,
+    shortName: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     name: DataTypes.STRING
   };
 
