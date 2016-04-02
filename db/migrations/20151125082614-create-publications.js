@@ -39,16 +39,12 @@ module.exports = {
     };
 
     const LanguageTable = {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
       name: {
         type: Sequelize.STRING
       },
       shortName: {
+        primaryKey: true,
+        allowNull: false,
         type: Sequelize.STRING
       },
     };

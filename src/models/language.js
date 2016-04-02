@@ -9,7 +9,8 @@ function Language(sequelize, DataTypes) {
   const LanguageModel = sequelize.define('Language', fields, {
     paranoid: true,
     associate: () => {
-      LanguageModel.hasMany(models.User, {foreignKey: 'languageId', as: 'preferredLanguage'})
+      LanguageModel.hasMany(models.User, {foreignKey: 'languageId', as: 'lang'})
+      LanguageModel.hasMany(models.Tree, {foreignKey: 'languageId', as: 'lang'})
     }
     //classMethods: {}
   });
