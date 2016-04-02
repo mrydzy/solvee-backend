@@ -9,6 +9,9 @@ function Tree(sequelize, DataTypes) {
 
   const TreeModel = sequelize.define('Tree', fields, {
     paranoid: true,
+    associate: () => {
+      TreeModel.belongsTo(models.User, {foreignKey: 'userId', as: 'user'});
+    }
     //classMethods: {}
   });
 
