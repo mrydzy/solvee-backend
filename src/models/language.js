@@ -10,8 +10,8 @@ function Language(sequelize, DataTypes) {
     paranoid: true,
     classMethods: {
       associate: (models) => {
-        LanguageModel.hasMany(models.User);
-        LanguageModel.hasMany(models.Tree);
+        LanguageModel.hasMany(models.User, {foreignKey: 'languageId'});
+        LanguageModel.hasMany(models.Tree, {foreignKey: 'languageId'});
       }
     }
   });

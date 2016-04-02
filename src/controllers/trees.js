@@ -13,6 +13,20 @@ class TreesController extends RouteController {
     const trees = this.models.Tree.findAll();
     response(trees);
   }
+  indexByLang(request, response) {
+    const lang = request.payload.lang;
+    if (!validateLang(lang)) {
+      response(Boom.badRequest("That is not language I know you polyglot"));
+    }
+    const trees = this.models.Tree.findAll(
+      {
+        where: {
+          lang: lang
+        }
+      }
+    );
+    response(trees);
+  }
   getTree(request, response) {
     const tree = this.models.Tree.findOne({
       where: {
@@ -49,7 +63,7 @@ class TreesController extends RouteController {
       name: name,
       userId: request.auth.credentials.user,
       data: data,
-      lang: lang
+      languageId: lang
     }).then(response);
   }
   update(request, response) {
@@ -63,11 +77,11 @@ class TreesController extends RouteController {
     const tree = this.models.Tree.update({
       data: treeData,
       name: request.payload.name,
-      lang: request.lang
+      languageId: request.lang
     }, {
       where: {
         id: request.params.treeId,
-        userId: request.auth.credentials.user
+        facebookId: request.auth.credentials.user
       }
     });
     response(tree);

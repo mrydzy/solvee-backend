@@ -11,8 +11,8 @@ function User(sequelize, DataTypes) {
     paranoid: true,
     classMethods: {
       associate: (models) => {
-        UserModel.belongsTo(models.Language);
-        UserModel.hasMany(models.Tree);
+        UserModel.belongsTo(models.Language, {as: 'language'});
+        UserModel.hasMany(models.Tree, {foreignKey : 'facebookId'});
       }
     }
   });

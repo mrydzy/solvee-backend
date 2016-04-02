@@ -10,8 +10,8 @@ function Tree(sequelize, DataTypes) {
     paranoid: true,
     classMethods: {
       associate: (models) => {
-        TreeModel.belongsTo(models.User);
-        TreeModel.belongsTo(models.Language);
+        TreeModel.belongsTo(models.User, {as: 'facebook'});
+        TreeModel.belongsTo(models.Language, {as: 'language'});
       }
     }
   });

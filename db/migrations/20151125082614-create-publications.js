@@ -26,6 +26,7 @@ module.exports = {
       },
       facebookId: {
         allowNull: false,
+        unique: true,
         type: Sequelize.STRING
       },
       name: {
@@ -33,7 +34,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       email: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.STRING
       },
       createdAt: {
@@ -78,12 +79,12 @@ module.exports = {
           key: 'shortName'
         }
       },
-      userId: {
+      facebookId: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'Users',
-          key: 'id'
+          key: 'facebookId'
         }
       },
       createdAt: {
