@@ -1,6 +1,6 @@
 'use strict';
 const RouteController = require('./route');
-const validateTree = require('./../services/validator').validateTreeTree;
+const validateTree = require('./../services/validator').validateTree;
 const validateLang = require('./../services/validator').validateLanguage;
 const Boom = require('boom');
 
@@ -61,10 +61,12 @@ class TreesController extends RouteController {
     }
     this.models.Tree.create({
       name: name,
-      userId: request.auth.credentials.user,
+      facebookId: request.auth.credentials.user,
       data: data,
       languageId: lang
-    }).then(response);
+    }).then((tree) => {
+      response(tree);
+    });
   }
   update(request, response) {
     if (!request.auth.isAuthenticated) {

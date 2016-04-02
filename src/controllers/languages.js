@@ -7,7 +7,7 @@ class LanguagesController extends RouteController {
     this.transaction = null;
   }
   index(request, response) {
-    const languages = this.models.Language.findAll();
+    const languages = this.models.Language.findAll({attributes: ['name', 'shortName']});
     response(languages);
   }
 }

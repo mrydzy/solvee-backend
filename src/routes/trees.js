@@ -61,7 +61,8 @@ function setupRoute(server, options, next) {
         validate: {
           payload: Joi.object().keys({
             name: Joi.string().required(),
-            data: Joi.any().required()
+            data: Joi.any().required(),
+            lang: Joi.string().required()
           })
         }
       }
@@ -80,7 +81,8 @@ function setupRoute(server, options, next) {
           }),
           payload: Joi.object().keys({
             name: Joi.string().required(),
-            data: Joi.any().required()
+            data: Joi.any().required(),
+            lang: Joi.string().required()
           })
         }
       }
