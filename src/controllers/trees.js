@@ -3,6 +3,7 @@ const RouteController = require('./route');
 const validateTree = require('./../services/validator').validateTree;
 const validateLang = require('./../services/validator').validateLanguage;
 const Boom = require('boom');
+const indexTreesMax = process.env.NUMBER_OF_TREES
 
 class TreesController extends RouteController {
   constructor(server) {
@@ -10,7 +11,11 @@ class TreesController extends RouteController {
     this.transaction = null;
   }
   index(request, response) {
-    const trees = this.models.Tree.findAll();
+    const trees = this.models.Tree.findAll({
+      attributes: ['id', 'name', 'languageId', 'createdAt'],
+      order: [['createdAt', 'DESC']],
+      limit: indexTreesMax
+    });
     response(trees);
   }
   indexByLang(request, response) {
@@ -20,6 +25,10 @@ class TreesController extends RouteController {
     }
     const trees = this.models.Tree.findAll(
       {
+        attributes:
+          ['id', 'name', 'languageId', 'createdAt'],
+        order: ['createdAt', 'DESC'],
+        limit: indexTreesMax,
         where: {
           lang: lang
         }
@@ -29,6 +38,8 @@ class TreesController extends RouteController {
   }
   getTree(request, response) {
     const tree = this.models.Tree.findOne({
+      attributes:
+        ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt'],
       where: {
         id: request.params.treeId
       }
@@ -38,6 +49,8 @@ class TreesController extends RouteController {
   getListForUser(request, response) {
     const userId = request.params.userId;
     this.models.Tree.findAndCountAll({
+      attributes:
+        ['id', 'name', 'languageId', 'createdAt'],
       where: {
         userId: userId
       }
