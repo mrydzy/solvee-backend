@@ -39,10 +39,11 @@ class TreesController extends RouteController {
   getTree(request, response) {
     const tree = this.models.Tree.findOne({
       include: [{
-        model: this.models.User
+        model: this.models.User,
+        attributes: ['name']
       }],
-      // attributes:
-      //   ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt', 'user.email'],
+      attributes:
+        ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt'],
       where: {
         id: request.params.treeId
       }
