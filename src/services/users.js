@@ -9,7 +9,7 @@ function createUserIfNew(server, user) {
 
   return models.User.findOrCreate({
     where: {
-      facebookId: user.id
+      facebookId: user.facebookId
     },
     defaults: {
     name: user.name,
