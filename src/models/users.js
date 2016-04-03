@@ -12,7 +12,7 @@ function User(sequelize, DataTypes) {
     classMethods: {
       associate: (models) => {
         UserModel.belongsTo(models.Language, {as: 'language', foreignKey : 'languageId'});
-        UserModel.hasMany(models.Tree, {foreignKey : 'facebookId'});
+        UserModel.hasMany(models.Tree, {foreignKey :'userId'});
       }
     }
   });

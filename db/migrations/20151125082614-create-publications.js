@@ -30,10 +30,9 @@ module.exports = {
     };
     const UserTable = {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type:Sequelize.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        autoIncrement: true
       },
       facebookId: {
         allowNull: false,
@@ -90,12 +89,12 @@ module.exports = {
           key: 'shortName'
         }
       },
-      facebookId: {
+      userId: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Users',
-          key: 'facebookId'
+          key: 'id'
         }
       },
       createdAt: {

@@ -19,8 +19,12 @@ function register(server, options, next) {
 
     try {
       const credentials = verify(token);
-      createUserIfNew(server, credentials);
-      return reply.continue({credentials});
+      createUserIfNew(server, credentials)
+        .then(function(createdUser) {
+          credentials.userId = createdUser[0].dataValues.id;
+          return reply.continue({credentials});
+        });
+
     } catch (e) {
       return reply(Boom.unauthorized(new Error(e.message)));
     }

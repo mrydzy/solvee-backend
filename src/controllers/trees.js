@@ -38,8 +38,11 @@ class TreesController extends RouteController {
   }
   getTree(request, response) {
     const tree = this.models.Tree.findOne({
-      attributes:
-        ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt'],
+      include: [{
+        model: this.models.User
+      }],
+      // attributes:
+      //   ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt', 'user.email'],
       where: {
         id: request.params.treeId
       }
@@ -74,7 +77,7 @@ class TreesController extends RouteController {
     }
     this.models.Tree.create({
       name: name,
-      facebookId: request.auth.credentials.id,
+      userId: request.auth.credentials.userId,
       data: data,
       languageId: lang
     }).then((tree) => {
@@ -93,11 +96,12 @@ class TreesController extends RouteController {
     const tree = this.models.Tree.update({
       data: treeData,
       name: request.payload.name,
-      languageId: lang
+      languageId: lang,
+      userId: request.auth.credentials.userId
     }, {
       where: {
         id: request.params.treeId,
-        facebookId: request.auth.credentials.id
+        userId: request.auth.credentials.userId
       }
     });
     response(tree);

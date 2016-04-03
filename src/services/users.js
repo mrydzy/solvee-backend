@@ -7,8 +7,7 @@ function createUserIfNew(server, user) {
   let dbClient = server.plugins[dbPluginName].db.sequelize; //TODO: constructor???? is how to do this?
   var models = dbClient.models;
 
-  models.User.findOrCreate(
-  {
+  return models.User.findOrCreate({
     where: {
       facebookId: user.id
     },
@@ -16,8 +15,7 @@ function createUserIfNew(server, user) {
     name: user.name,
     email: user.email
   }
-  }
-  );
+  });
 }
 
 module.exports = {
