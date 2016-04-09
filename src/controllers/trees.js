@@ -29,6 +29,10 @@ class TreesController extends RouteController {
     }
     const trees = this.models.Tree.findAll(
       {
+        include: [{
+          model: this.models.User,
+          attributes: ['name']
+        }],
         attributes:
           ['id', 'name', 'languageId', 'createdAt'],
         order: [['createdAt', 'DESC']],
