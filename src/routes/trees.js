@@ -36,6 +36,21 @@ function setupRoute(server, options, next) {
     },
     {
       method: 'GET',
+      path: '/trees/{lang}/lang',
+      config: {
+        handler: treesController.indexByLang,
+        description: 'Tree list for language',
+        notes: 'Return trees for language',
+        tags: ['api'],
+        validate: {
+          params: Joi.object().keys({
+            lang: Joi.string().required().description('Language ID')
+          })
+        }
+      }
+    },
+    {
+      method: 'GET',
       path: '/trees/{treeId}',
       config: {
         handler: treesController.getTree,

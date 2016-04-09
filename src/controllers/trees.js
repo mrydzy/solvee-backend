@@ -19,7 +19,7 @@ class TreesController extends RouteController {
     response(trees);
   }
   indexByLang(request, response) {
-    const lang = request.payload.lang;
+    const lang = request.params.lang;
     if (!validateLang(lang)) {
       response(Boom.badRequest("That is not language I know you polyglot"));
     }
@@ -27,10 +27,10 @@ class TreesController extends RouteController {
       {
         attributes:
           ['id', 'name', 'languageId', 'createdAt'],
-        order: ['createdAt', 'DESC'],
+        // order: ['createdAt', 'DESC'],
         limit: indexTreesMax,
         where: {
-          lang: lang
+          languageId: lang
         }
       }
     );
