@@ -27,7 +27,7 @@ class TreesController extends RouteController {
       {
         attributes:
           ['id', 'name', 'languageId', 'createdAt'],
-        // order: ['createdAt', 'DESC'],
+        order: [['createdAt', 'DESC']],
         limit: indexTreesMax,
         where: {
           languageId: lang
