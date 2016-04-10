@@ -60,19 +60,22 @@ class TreesController extends RouteController {
   }
   getListForUser(request, response) {
     const userId = request.params.userId;
-    this.models.Tree.findAndCountAll({
-      attributes:
-        ['id', 'name', 'languageId', 'createdAt'],
-      where: {
-        userId: userId
+    var trees = this.models.Tree.findAll(
+      {
+        include: [{
+          model: this.models.User,
+          attributes: ['id', 'name']
+        }],
+        attributes:
+          ['id', 'name', 'languageId', 'createdAt'],
+        order: [['createdAt', 'DESC']],
+        limit: indexTreesMax,
+        where: {
+          userId: userId
+        }
       }
-    })
-      .then(data => {
-        response({
-          items: data.rows,
-          count: data.count
-        })
-      });
+    );
+    response(trees);
   }
   save(request, response) {
     const data = request.payload.data;
