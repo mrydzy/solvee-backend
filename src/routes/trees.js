@@ -22,7 +22,6 @@ function setupRoute(server, options, next) {
       method: 'GET',
       path: '/users/{userId}/trees',
       config: {
-        auth: 'token',
         handler: treesController.getListForUser,
         description: 'Tree list for user',
         notes: 'Return trees for user',
