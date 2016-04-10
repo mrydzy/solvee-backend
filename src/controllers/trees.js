@@ -48,7 +48,7 @@ class TreesController extends RouteController {
     const tree = this.models.Tree.findOne({
       include: [{
         model: this.models.User,
-        attributes: ['facebookId', 'name']
+        attributes: ['facebookId', 'name', 'id']
       }],
       attributes:
         ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt'],
