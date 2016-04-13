@@ -64,6 +64,22 @@ function setupRoute(server, options, next) {
       }
     },
     {
+      method: 'DELETE',
+      path: '/trees/{treeId}',
+      config: {
+        auth: 'token',
+        handler: treesController.remove,
+        description: 'Delete tree',
+        notes: 'Mark as deleted',
+        tags: ['api'],
+        validate: {
+          params: Joi.object().keys({
+            treeId: Joi.number().integer().required().description('Tree ID')
+          })
+        }
+      }
+    },
+    {
       method: 'POST',
       path: '/trees',
       config: {

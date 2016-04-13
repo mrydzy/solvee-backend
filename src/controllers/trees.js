@@ -118,6 +118,19 @@ class TreesController extends RouteController {
     });
     response(tree);
   }
+  remove(request, response) {
+    if (!request.auth.isAuthenticated) {
+      response(Boom.unauthorized());
+    }
+    var tree = this.models.Tree.destroy({
+      where: {
+        id: request.params.treeId,
+        userId: request.auth.credentials.userId
+      }
+    });
+    response(tree);
+  }
+
 }
 
 module.exports = TreesController;
