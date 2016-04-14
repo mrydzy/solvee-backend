@@ -7,6 +7,9 @@ function setupRouting(server, options, next) {
     },
     {
       register: require('./languages')
+    },
+    {
+      register: require('./users')
     }
   ];
 
