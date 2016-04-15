@@ -34,7 +34,15 @@ class UsersController extends RouteController {
     if (!request.auth.isAuthenticated) {
       response(Boom.unauthorized());
     }
-    
+    const user = this.models.User.update({
+      name: request.payload.name,
+      languageId: request.payload.name,
+    }, {
+      where: {
+        userId: request.auth.credentials.userId
+      }
+    });
+    response(user);
   }
 }
 

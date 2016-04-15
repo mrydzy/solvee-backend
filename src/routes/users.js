@@ -33,6 +33,17 @@ function setupRoute(server, options, next) {
         notes: 'Return user',
         tags: ['api']
       }
+    },
+    {
+      method: 'PUT',
+      path: '/users',
+      config: {
+        auth: 'token',
+        handler: usersController.updateCurrentUser,
+        description: 'Update current user data',
+        notes: 'Return user',
+        tags: ['api']
+      }
     }
   ]);
 
