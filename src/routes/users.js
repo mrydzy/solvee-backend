@@ -42,7 +42,13 @@ function setupRoute(server, options, next) {
         handler: usersController.updateCurrentUser,
         description: 'Update current user data',
         notes: 'Return user',
-        tags: ['api']
+        tags: ['api'],
+        validate: {
+          payload: Joi.object().keys({
+            name: Joi.string().required().description('User name'),
+            email: Joi.string().email().description('User email')
+          })
+        }
       }
     }
   ]);

@@ -14,7 +14,7 @@ class UsersController extends RouteController {
       where: {
         id: request.params.userId
       }
-    })
+    });
     response(user);
   }
   getCurrentUser(request, response) {
@@ -25,9 +25,9 @@ class UsersController extends RouteController {
       attributes:
         ['id', 'name', 'email', 'createdAt', 'languageId'],
       where: {
-        userId: request.auth.credentials.userId
+        id: request.auth.credentials.userId
       }
-    })
+    });
     response(user);
   }
   updateCurrentUser(request, response) {
@@ -36,10 +36,10 @@ class UsersController extends RouteController {
     }
     const user = this.models.User.update({
       name: request.payload.name,
-      languageId: request.payload.name,
+      email: request.payload.email,
     }, {
       where: {
-        userId: request.auth.credentials.userId
+        id: request.auth.credentials.userId
       }
     });
     response(user);
