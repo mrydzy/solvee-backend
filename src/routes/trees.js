@@ -35,6 +35,17 @@ function setupRoute(server, options, next) {
     },
     {
       method: 'GET',
+      path: '/trees/current',
+      config: {
+        auth: 'token',
+        handler: treesController.getListForCurrentUser,
+        description: 'Tree list for user',
+        notes: 'Return trees for user',
+        tags: ['api']
+      }
+    },
+    {
+      method: 'GET',
       path: '/trees/{lang}/lang',
       config: {
         handler: treesController.indexByLang,

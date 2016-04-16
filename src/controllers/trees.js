@@ -77,6 +77,29 @@ class TreesController extends RouteController {
     );
     response(trees);
   }
+  getListForCurrentUser(request, response) {
+    if (!request.auth.isAuthenticated) {
+      response(Boom.unauthorized());
+    }
+    const userId = request.auth.credentials.userId;
+    var trees = this.models.Tree.findAll(
+      {
+        include: [{
+          model: this.models.User,
+          attributes: ['id', 'name']
+        }],
+        attributes:
+          ['id', 'name', 'languageId', 'createdAt'],
+        order: [['createdAt', 'DESC']],
+        limit: indexTreesMax,
+        where: {
+          userId: userId
+        }
+      }
+    );
+    response(trees);
+  }
+
   save(request, response) {
     const data = request.payload.data;
     const name = request.payload.name;
