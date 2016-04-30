@@ -16,7 +16,7 @@ class TreesController extends RouteController {
         model: this.models.User,
         attributes: ['name']
       }],
-      attributes: ['id', 'name', 'languageId', 'createdAt'],
+      attributes: ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3'],
       order: [['createdAt', 'DESC']],
       limit: indexTreesMax
     });
@@ -34,7 +34,7 @@ class TreesController extends RouteController {
           attributes: ['name']
         }],
         attributes:
-          ['id', 'name', 'languageId', 'createdAt'],
+          ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3'],
         order: [['createdAt', 'DESC']],
         limit: indexTreesMax,
         where: {
@@ -67,7 +67,7 @@ class TreesController extends RouteController {
           attributes: ['id', 'name']
         }],
         attributes:
-          ['id', 'name', 'languageId', 'createdAt'],
+          ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3'],
         order: [['createdAt', 'DESC']],
         limit: indexTreesMax,
         where: {
@@ -89,7 +89,7 @@ class TreesController extends RouteController {
           attributes: ['id', 'name']
         }],
         attributes:
-          ['id', 'name', 'languageId', 'createdAt'],
+          ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3'],
         order: [['createdAt', 'DESC']],
         limit: indexTreesMax,
         where: {
@@ -105,45 +105,48 @@ class TreesController extends RouteController {
     const name = request.payload.name;
     const lang = request.payload.lang;
     const photoLink = request.payload.photoLink;
-    // if (!request.auth.isAuthenticated) {
-    //   response(Boom.unauthorized());
-    // }
-    // if (!validateTree(data) || !validateLang(lang)) {
-    //   response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth, request needs to have correct language.'));
-    // }
+    if (!validateTree(data) || !validateLang(lang)) {
+      response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth, request needs to have correct language.'));
+    }
+    var tree = JSON.parse(data);
     this.models.Tree.create({
       name: name,
       userId: request.auth.credentials.userId,
       data: data,
       photoLink: photoLink,
-      languageId: lang
+      languageId: lang,
+      child1: tree.options[0].text,
+      child2: tree.options.length >=2 ? tree.options[1].text : "?",
+      child3: tree.options.length >=3 ? tree.options[2].text : "?"
     }).then((tree) => {
       response(tree);
     });
   }
+
   update(request, response) {
-    if (!request.auth.isAuthenticated) {
-      response(Boom.unauthorized());
-    }
     const treeData = request.payload.data;
     const lang = request.payload.lang;
     const photoLink = request.payload.photoLink;
     if (!validateTree(treeData) || !validateLang(lang)) {
       response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth, request needs to have correct language.'));
     }
-    const tree = this.models.Tree.update({
+    var tree = JSON.parse(treeData);
+    const treeModel = this.models.Tree.update({
       data: treeData,
       name: request.payload.name,
       languageId: lang,
       photoLink: photoLink,
-      userId: request.auth.credentials.userId
+      userId: request.auth.credentials.userId,
+      child1: tree.options[0].text,
+      child2: tree.options.length >=2 ? tree.options[1].text : "?",
+      child3: tree.options.length >=3 ? tree.options[2].text : "?"
     }, {
       where: {
         id: request.params.treeId,
         userId: request.auth.credentials.userId
       }
     });
-    response(tree);
+    response(treeModel);
   }
   remove(request, response) {
     if (!request.auth.isAuthenticated) {

@@ -3,7 +3,8 @@
 const TREES_TABLE_NAME = 'Trees';
 
 module.exports = {
-  up: function (queryInterface, Sequelize) {
+  up:
+    function (queryInterface, Sequelize) {
     return queryInterface.addColumn(
       TREES_TABLE_NAME,
       'photoLink',

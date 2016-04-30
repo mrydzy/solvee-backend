@@ -4,7 +4,10 @@ function Tree(sequelize, DataTypes) {
   const fields = {
     data: DataTypes.JSONB,
     name: DataTypes.STRING,
-    photoLink: DataTypes.STRING
+    photoLink: DataTypes.STRING,
+    child1: DataTypes.STRING,
+    child2: DataTypes.STRING,
+    child3: DataTypes.STRING
   };
 
   const TreeModel = sequelize.define('Tree', fields, {
