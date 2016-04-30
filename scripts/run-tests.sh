@@ -10,5 +10,8 @@ fi
 
 export LOGGING_DISABLED=true;
 
+#init db
+#npm run db:seed
+
 # run mocha test runner
 mocha

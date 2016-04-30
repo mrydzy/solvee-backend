@@ -4,10 +4,10 @@ const tooLongTreeIdRegex = new RegExp('id\\":([0-9]{7})+', 'g');
 const availableLangs = [
   'en',
   'pl'
-]
+];
 
 
-function validateTree(treeString, lang) {
+function validateTree(treeString) {
   var tree = JSON.parse(treeString);
   if (tree.options.length < 1) { //no nodes
     return false;

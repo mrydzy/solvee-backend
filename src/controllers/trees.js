@@ -3,7 +3,7 @@ const RouteController = require('./route');
 const validateTree = require('./../services/validator').validateTree;
 const validateLang = require('./../services/validator').validateLanguage;
 const Boom = require('boom');
-const indexTreesMax = process.env.NUMBER_OF_TREES
+const indexTreesMax = process.env.NUMBER_OF_TREES;
 
 class TreesController extends RouteController {
   constructor(server) {
@@ -55,7 +55,7 @@ class TreesController extends RouteController {
       where: {
         id: request.params.treeId
       }
-    })
+    });
     response(tree);
   }
   getListForUser(request, response) {
@@ -105,12 +105,12 @@ class TreesController extends RouteController {
     const name = request.payload.name;
     const lang = request.payload.lang;
     const photoLink = request.payload.photoLink;
-    if (!request.auth.isAuthenticated) {
-      response(Boom.unauthorized());
-    }
-    if (!validateTree(data) || !validateLang(lang)) {
-      response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth, request needs to have correct language.'));
-    }
+    // if (!request.auth.isAuthenticated) {
+    //   response(Boom.unauthorized());
+    // }
+    // if (!validateTree(data) || !validateLang(lang)) {
+    //   response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth, request needs to have correct language.'));
+    // }
     this.models.Tree.create({
       name: name,
       userId: request.auth.credentials.userId,

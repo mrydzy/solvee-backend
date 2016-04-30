@@ -7,10 +7,10 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "check-node-version --node '>= 5.6.0' && jshint . && ./scripts/run-tests.sh",
+    "test": "./scripts/run-tests.sh",
     "coverage": "jshint . && ./scripts/run-coverage.sh",
     "postinstall": "./scripts/migrate-database.sh",
-    "db:seed": "./scripts/run-seeders.sh",
+    "db:seed": "sequelize db:seed:all",
     "lint": "jshint"
   },
   "author": "Marek Nogiec <marek@nogiec.org>",
