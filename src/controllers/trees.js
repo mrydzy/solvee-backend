@@ -51,7 +51,7 @@ class TreesController extends RouteController {
         attributes: ['facebookId', 'name', 'id']
       }],
       attributes:
-        ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt'],
+        ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt', 'photoLink'],
       where: {
         id: request.params.treeId
       }
@@ -104,6 +104,7 @@ class TreesController extends RouteController {
     const data = request.payload.data;
     const name = request.payload.name;
     const lang = request.payload.lang;
+    const photoLink = request.payload.photoLink;
     if (!request.auth.isAuthenticated) {
       response(Boom.unauthorized());
     }
@@ -114,6 +115,7 @@ class TreesController extends RouteController {
       name: name,
       userId: request.auth.credentials.userId,
       data: data,
+      photoLink: photoLink,
       languageId: lang
     }).then((tree) => {
       response(tree);
@@ -125,6 +127,7 @@ class TreesController extends RouteController {
     }
     const treeData = request.payload.data;
     const lang = request.payload.lang;
+    const photoLink = request.payload.photoLink;
     if (!validateTree(treeData) || !validateLang(lang)) {
       response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth, request needs to have correct language.'));
     }
@@ -132,6 +135,7 @@ class TreesController extends RouteController {
       data: treeData,
       name: request.payload.name,
       languageId: lang,
+      photoLink: photoLink,
       userId: request.auth.credentials.userId
     }, {
       where: {

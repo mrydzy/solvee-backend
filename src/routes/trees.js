@@ -103,7 +103,8 @@ function setupRoute(server, options, next) {
           payload: Joi.object().keys({
             name: Joi.string().required(),
             data: Joi.any().required(),
-            lang: Joi.string().required()
+            lang: Joi.string().required(),
+            photoLink: Joi.string().optional()
           })
         }
       }
@@ -123,7 +124,8 @@ function setupRoute(server, options, next) {
           payload: Joi.object().keys({
             name: Joi.string().required(),
             data: Joi.any().required(),
-            lang: Joi.string().required()
+            lang: Joi.string().required(),
+            photoLink: Joi.string().optional()
           })
         }
       }
