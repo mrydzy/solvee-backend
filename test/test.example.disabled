@@ -1,0 +1,231 @@
+'use strict';
+
+const server = require('./../../helpers/server');
+const utils = require('./../../helpers/utils.js');
+const db = server.plugins[utils.pluginNames.db].db.sequelize;
+const _ = require('lodash');
+const assert = require('assert');
+const defaults = require('./../../helpers/defaults');
+
+const createCommentEndpoint = '/publications/{publicationId}/{contentUri}/comments';
+
+describe('Routes ' + createCommentEndpoint, () => {
+  let publicationId = 'test';
+  const samplePublication = {
+    "name": "Bergens Tidende",
+    "canonicalName": publicationId
+  };
+
+  beforeEach(() => {
+    return utils.syncDb()
+      .then(() => {
+        return utils.createSamplePublication(samplePublication);
+      });
+  });
+
+  describe('POST comments ' + createCommentEndpoint, () => {
+    const contentUri = 'test:bt:1234';
+    let url = createCommentEndpoint.replace('{publicationId}', publicationId).replace('{contentUri}', contentUri);
+    let comment = {
+      message: "test comment"
+    };
+    const externalUri = 'spid:406047';
+
+    it('returns 201 HTTP status code when properly created', () => {
+      let options = {method: 'POST', url: url, payload: comment};
+
+      return server.inject(_.merge({}, defaults, options))
+        .then(response => {
+          assert.equal(response.statusCode, 201);
+        });
+    });
+
+    it('returns user object', () => {
+      let options = {method: 'POST', url: url, payload: comment};
+
+      return server.inject(_.merge({}, defaults, options))
+        .then(response => {
+          assert(response.result.user);
+        });
+    });
+
+    it('shouldn\'t allow to create user with existing "externalUri"', () => {
+      let options = {method: 'POST', url: url, payload: comment};
+
+      return Promise.all([
+          server.inject(_.merge({}, defaults, options)),
+          server.inject(_.merge({}, defaults, options))
+        ])
+        .then(() => {
+          const query = {
+            where: {
+              externalUri: externalUri
+            }
+          };
+          return db.models.User.findAll(query);
+        })
+        .then(users => {
+          assert.equal(users.length, 1);
+        });
+    });
+
+
+    it('new discussion object should be created when it doesn\'t exist', () => {
+      let options = {method: 'POST', url: url, payload: comment};
+
+      return server.inject(_.merge({}, defaults, options))
+        .then(() => {
+          const query = {
+            where: {
+              contentUri: contentUri
+            }
+          };
+          return db.models.Discussion.find(query);
+        })
+        .then(discussion => {
+          assert.equal(discussion.contentUri, contentUri);
+        });
+    });
+
+    it('shouldn\'t allow to create discussion with existing "contentUri"', () => {
+      let options = {method: 'POST', url: url, payload: comment};
+
+      return server.inject(_.merge({}, defaults, options))
+        .then(() => {
+          return server.inject(_.merge({}, defaults, options));
+        })
+        .then(() => {
+          const query = {
+            where: {
+              contentUri: contentUri
+            }
+          };
+          return db.models.Discussion.findAll(query);
+        })
+        .then(discussions => {
+          assert.equal(discussions.length, 1);
+        });
+    });
+
+    it('discussion should have proper id of the latest comment created in "commentsLatestId"', () => {
+      let options = {method: 'POST', url: url, payload: comment};
+      const createComments = 2;
+
+      return server.inject(_.merge({}, defaults, options))
+        .then(() => {
+          return server.inject(_.merge({}, defaults, options));
+        })
+        .then(() => {
+          const query = {
+            where: {
+              contentUri: contentUri
+            }
+          };
+          return db.models.Discussion.find(query);
+        })
+        .then(discussion => {
+          assert.equal(discussion.commentsLatestId, createComments);
+        });
+    });
+
+    it('discussion should have correct number of comments in "commentsCount"', () => {
+      let options = {method: 'POST', url: url, payload: comment};
+      const createComments = [
+        server.inject(_.merge({}, defaults, options))
+      ];
+
+      return Promise.all(createComments)
+        .then(() => {
+          const query = {
+            where: {
+              contentUri: contentUri
+            }
+          };
+          return db.models.Discussion.find(query);
+        })
+        .then(discussion => {
+          assert.equal(discussion.commentsCount, createComments.length);
+        });
+    });
+
+    it('new user object should be created when it doesn\'t exist with proper fields', () => {
+      let options = {method: 'POST', url: url, payload: comment};
+
+      return server.inject(_.merge({}, defaults, options))
+        .then(response => {
+          return Promise.resolve(response.result);
+        })
+        .then(() => {
+          const query = {
+            where: {
+              externalUri: externalUri
+            }
+          };
+          return db.models.User.find(query);
+        })
+        .then(user => {
+          assert(user.id);
+          assert(user.name);
+          assert(user.externalUri);
+        });
+    });
+
+    it('returns 422 when unsupported publication identifier was provided (on no-auth route)', () => {
+      publicationId = 'wrongPubId';
+
+      let url = createCommentEndpoint.replace('{publicationId}', publicationId).replace('{contentUri}', contentUri);
+      let options = {method: 'GET', url: url};
+
+      return server.inject(_.merge({}, defaults, options))
+        .then(response => {
+          assert.equal(response.statusCode, 422);
+        });
+    });
+
+    it('returns 401 when unsupported publication identifier was provided (on auth-locked route)', () => {
+      publicationId = 'wrongPubId';
+
+      let url = createCommentEndpoint.replace('{publicationId}', publicationId).replace('{contentUri}', contentUri);
+      let options = {method: 'POST', url: url, payload: comment};
+
+      return server.inject(_.merge({}, defaults, options))
+        .then(response => {
+          assert.equal(response.statusCode, 401);
+        });
+    });
+
+    it('returns 422 when given parent ID not exist', () => {
+      publicationId = 'test';
+      comment.parentId = 4353;
+
+      let url = createCommentEndpoint.replace('{publicationId}', publicationId).replace('{contentUri}', contentUri);
+      let options = {method: 'POST', url: url, payload: comment};
+
+      return server.inject(_.merge({}, defaults, options))
+        .then(response => {
+          assert.equal(response.statusCode, 422);
+        });
+    });
+
+    it('add comment as a children to comment', () => {
+      publicationId = 'test';
+      delete comment.parentId;
+
+      let url = createCommentEndpoint.replace('{publicationId}', publicationId).replace('{contentUri}', contentUri);
+      let options = {method: 'POST', url: url, payload: comment};
+
+      return server.inject(_.merge({}, defaults, options))
+        .then(response => {
+          comment.parentId = response.result.id;
+          options.payload = comment;
+        })
+        .then(() => server.inject(_.merge({}, defaults, options)))
+        .then(response => {
+          assert.equal(response.statusCode, 201);
+          assert.equal(response.result.parentId, comment.parentId);
+        });
+    });
+
+  });
+
+});
