@@ -116,8 +116,8 @@ class TreesController extends RouteController {
       photoLink: photoLink,
       languageId: lang,
       child1: tree.options[0].text,
-      child2: tree.options.length >=2 ? tree.options[1].text : "?",
-      child3: tree.options.length >=3 ? tree.options[2].text : "?"
+      child2: tree.options.length >=2 ? tree.options[1].text : null,
+      child3: tree.options.length >=3 ? tree.options[2].text : null
     }).then((tree) => {
       response(tree);
     });
@@ -138,8 +138,8 @@ class TreesController extends RouteController {
       photoLink: photoLink,
       userId: request.auth.credentials.userId,
       child1: tree.options[0].text,
-      child2: tree.options.length >=2 ? tree.options[1].text : "?",
-      child3: tree.options.length >=3 ? tree.options[2].text : "?"
+      child2: tree.options.length >=2 ? tree.options[1].text : null,
+      child3: tree.options.length >=3 ? tree.options[2].text : null
     }, {
       where: {
         id: request.params.treeId,
