@@ -11,40 +11,33 @@ class TreesController extends RouteController {
     this.transaction = null;
   }
   index(request, response) {
-    const trees = this.models.Tree.findAll({
+    var query = {
       include: [{
         model: this.models.User,
         attributes: ['name']
       }],
       attributes: ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3'],
       order: [['createdAt', 'DESC']],
-      limit: indexTreesMax
-    });
+      limit: indexTreesMax,
+    };
 
-    response(trees);
-  }
-  indexByLang(request, response) {
-    const lang = request.params.lang;
-    if (!validateLang(lang)) {
-      response(Boom.badRequest("That is not language I know you polyglot"));
+    if (request.query.page) {
+      query.offset = request.query.page * indexTreesMax;
     }
-    const trees = this.models.Tree.findAll(
-      {
-        include: [{
-          model: this.models.User,
-          attributes: ['name']
-        }],
-        attributes:
-          ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3'],
-        order: [['createdAt', 'DESC']],
-        limit: indexTreesMax,
-        where: {
-          languageId: lang
-        }
+
+    if (request.query.lang) {
+      if (!validateLang(request.query.lang)) {
+        response(Boom.badRequest("That is not language I know you polyglot"));
+        return;
       }
-    );
+      query.where = {
+        languageId: request.query.lang
+      }
+    }
+    const trees = this.models.Tree.findAll(query);
     response(trees);
   }
+  
   getTree(request, response) {
     const tree = this.models.Tree.findOne({
       include: [{
@@ -59,6 +52,7 @@ class TreesController extends RouteController {
     });
     response(tree);
   }
+
   getListForUser(request, response) {
     const userId = request.params.userId;
     var trees = this.models.Tree.findAll(
@@ -90,7 +84,7 @@ class TreesController extends RouteController {
           attributes: ['id', 'name']
         }],
         attributes:
-          ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3'],
+          ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3'],
         order: [['createdAt', 'DESC']],
         limit: indexTreesMax,
         where: {

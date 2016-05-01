@@ -10,17 +10,7 @@ function setupRoute(server, options, next) {
   server.route([
     {
       method: 'GET',
-      path: '/trees',
-      config: {
-        handler: treesController.index,
-        description: 'Tree list',
-        notes: 'Return trees',
-        tags: ['api']
-      }
-    },
-    {
-      method: 'GET',
-      path: '/users/{userId}/trees',
+      path: '/trees/{userId}/user',
       config: {
         handler: treesController.getListForUser,
         description: 'Tree list for user',
@@ -46,16 +36,17 @@ function setupRoute(server, options, next) {
     },
     {
       method: 'GET',
-      path: '/trees/{lang}/lang',
+      path: '/index',
       config: {
-        handler: treesController.indexByLang,
-        description: 'Tree list for language',
-        notes: 'Return trees for language',
+        handler: treesController.index,
+        description: 'Tree list',
+        notes: 'Return trees',
         tags: ['api'],
         validate: {
-          params: Joi.object().keys({
-            lang: Joi.string().required().description('Language ID')
-          })
+          query: {
+            page: Joi.number().integer().min(0).optional(),
+            lang: Joi.string().optional()
+          }
         }
       }
     },
