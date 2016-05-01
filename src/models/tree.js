@@ -16,6 +16,7 @@ function Tree(sequelize, DataTypes) {
       associate: (models) => {
         TreeModel.belongsTo(models.User, {foreignKey: 'userId'});
         TreeModel.belongsTo(models.Language, {foreignKey: 'languageId'});
+        TreeModel.belongsTo(models.Style, {foreignKey: 'styleId'});
       }
     }
   });

@@ -7,13 +7,13 @@ module.exports = {
     return [
       queryInterface.bulkInsert(STYLES_TABLE,
       [{
-        name: 'Solvee'
+        name: 'Solvee', createdAt: new Date(), updatedAt: new Date()
       }, {
-        name: 'Pink'
+        name: 'Pink', createdAt: new Date(), updatedAt: new Date()
       }, {
-        name: 'Dark'
+        name: 'Dark', createdAt: new Date(), updatedAt: new Date()
       }, {
-        name: 'Autumn'
+        name: 'Autumn', createdAt: new Date(), updatedAt: new Date()
       }])
     ]
   },

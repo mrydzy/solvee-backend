@@ -57,8 +57,10 @@ class TreesController extends RouteController {
       query.offset = (request.query.page - 1) * indexTreesMax;
     }
 
-    const tree = this.models.Tree.findOne(query);
-    response(tree);
+    return this.models.Tree
+      .findOne(query)
+      .then(response)
+      .catch(this.handleError);
   }
 
   getListForUser(request, response) {
@@ -67,6 +69,9 @@ class TreesController extends RouteController {
       include: [{
         model: this.models.User,
         attributes: ['id', 'name']
+      }, {
+        model: this.models.Style,
+        attributes: ['name']
       }],
       attributes:
         ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink'],
@@ -80,8 +85,10 @@ class TreesController extends RouteController {
     if (request.query.page) {
       query.offset = (request.query.page - 1) * indexTreesMax;
     }
-    var trees = this.models.Tree.findAll(query);
-    response(trees);
+    return this.models.Tree
+      .findAll(query)
+      .then(response)
+      .catch(this.handleError);
   }
 
   getListForCurrentUser(request, response) {
@@ -107,8 +114,10 @@ class TreesController extends RouteController {
       query.offset = (request.query.page - 1) * indexTreesMax;
     }
 
-    var trees = this.models.Tree.findAll(query);
-    response(trees);
+    return this.models.Tree
+      .findAll(query)
+      .then(response)
+      .catch(this.handleError);
   }
 
   save(request, response) {
