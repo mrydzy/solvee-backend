@@ -16,7 +16,7 @@ class TreesController extends RouteController {
         model: this.models.User,
         attributes: ['name']
       }],
-      attributes: ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3'],
+      attributes: ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3', 'photoLink'],
       order: [['createdAt', 'DESC']],
       limit: indexTreesMax,
     };
@@ -67,7 +67,7 @@ class TreesController extends RouteController {
         attributes: ['id', 'name']
       }],
       attributes:
-        ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3'],
+        ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3', 'photoLink'],
       order: [['createdAt', 'DESC']],
       limit: indexTreesMax,
       where: {
@@ -92,7 +92,7 @@ class TreesController extends RouteController {
         attributes: ['id', 'name']
       }],
       attributes:
-        ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3'],
+        ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3', 'photoLink'],
       order: [['createdAt', 'DESC']],
       limit: indexTreesMax,
       where: {
