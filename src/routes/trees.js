@@ -44,7 +44,7 @@ function setupRoute(server, options, next) {
         tags: ['api'],
         validate: {
           query: {
-            page: Joi.number().integer().min(0).optional(),
+            page: Joi.number().integer().min(1).optional(),
             lang: Joi.string().optional()
           }
         }

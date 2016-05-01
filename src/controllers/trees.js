@@ -22,7 +22,7 @@ class TreesController extends RouteController {
     };
 
     if (request.query.page) {
-      query.offset = request.query.page * indexTreesMax;
+      query.offset = (request.query.page - 1) * indexTreesMax;
     }
 
     if (request.query.lang) {
