@@ -48,6 +48,9 @@ class TreesController extends RouteController {
       include: [{
         model: this.models.User,
         attributes: ['facebookId', 'name', 'id']
+      }, {
+        model: this.models.Style,
+        attributes: ['name', 'id']
       }],
       attributes:
         ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt', 'photoLink'],
@@ -144,9 +147,8 @@ class TreesController extends RouteController {
       child1: tree.options[0].text,
       child2: tree.options.length >=2 ? tree.options[1].text : null,
       child3: tree.options.length >=3 ? tree.options[2].text : null
-    }).then((tree) => {
-      response(tree);
-    });
+    }).then(response)
+      .catch(this.handleError);
   }
 
   update(request, response) {
@@ -157,7 +159,7 @@ class TreesController extends RouteController {
       response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth, request needs to have correct language.'));
     }
     var tree = JSON.parse(treeData);
-    const treeModel = this.models.Tree.update({
+    return this.models.Tree.update({
       data: treeData,
       name: request.payload.name,
       languageId: lang,
@@ -171,20 +173,22 @@ class TreesController extends RouteController {
         id: request.params.treeId,
         userId: request.auth.credentials.userId
       }
-    });
-    response(treeModel);
+    })
+      .then(response)
+      .catch(this.handleError);
   }
+
   remove(request, response) {
     if (!request.auth.isAuthenticated) {
       response(Boom.unauthorized());
     }
-    var tree = this.models.Tree.destroy({
+    return this.models.Tree.destroy({
       where: {
         id: request.params.treeId,
         userId: request.auth.credentials.userId
       }
-    });
-    response(tree);
+    }).then(response)
+      .catch(this.handleError);
   }
 
 }
