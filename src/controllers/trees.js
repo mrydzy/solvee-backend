@@ -22,7 +22,7 @@ class TreesController extends RouteController {
     };
 
     if (request.query.page) {
-      query.offset = (request.query.page - 1) * indexTreesMax;
+      // query.offset = (request.query.page - 1) * indexTreesMax;
     }
 
     if (request.query.lang) {
@@ -81,6 +81,7 @@ class TreesController extends RouteController {
     var trees = this.models.Tree.findAll(query);
     response(trees);
   }
+
   getListForCurrentUser(request, response) {
     if (!request.auth.isAuthenticated) {
       response(Boom.unauthorized());
