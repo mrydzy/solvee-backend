@@ -16,9 +16,9 @@ class TreesController extends RouteController {
         model: this.models.User,
         attributes: ['name']
       }],
-      attributes: ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3', 'photoLink'],
+      attributes: ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink'],
       order: [['createdAt', 'DESC']],
-      limit: indexTreesMax,
+      limit: indexTreesMax
     };
 
     if (request.query.page) {
@@ -45,7 +45,7 @@ class TreesController extends RouteController {
         attributes: ['facebookId', 'name', 'id']
       }],
       attributes:
-        ['id', 'data', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'updatedAt', 'photoLink'],
+        ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt', 'photoLink'],
       where: {
         id: request.params.treeId
       }
@@ -67,7 +67,7 @@ class TreesController extends RouteController {
         attributes: ['id', 'name']
       }],
       attributes:
-        ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3', 'photoLink'],
+        ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink'],
       order: [['createdAt', 'DESC']],
       limit: indexTreesMax,
       where: {
@@ -92,7 +92,7 @@ class TreesController extends RouteController {
         attributes: ['id', 'name']
       }],
       attributes:
-        ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3', 'photoLink'],
+        ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink'],
       order: [['createdAt', 'DESC']],
       limit: indexTreesMax,
       where: {
