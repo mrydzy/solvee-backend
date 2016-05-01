@@ -103,7 +103,8 @@ function setupRoute(server, options, next) {
             name: Joi.string().required(),
             data: Joi.any().required(),
             lang: Joi.string().required(),
-            photoLink: Joi.string().optional()
+            photoLink: Joi.string().optional(),
+            styleId: Joi.string().optional()
           })
         }
       }
@@ -124,7 +125,8 @@ function setupRoute(server, options, next) {
             name: Joi.string().required(),
             data: Joi.any().required(),
             lang: Joi.string().required(),
-            photoLink: Joi.string().optional()
+            photoLink: Joi.string().optional(),
+            styleId: Joi.string()
           })
         }
       }

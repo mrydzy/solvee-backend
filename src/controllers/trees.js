@@ -133,6 +133,7 @@ class TreesController extends RouteController {
     const data = request.payload.data;
     const name = request.payload.name;
     const lang = request.payload.lang;
+    const styleId = request.payload.styleId ? request.payload.styleId : 1;
     const photoLink = request.payload.photoLink;
     if (!validateTree(data) || !validateLang(lang)) {
       response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth, request needs to have correct language.'));
@@ -146,7 +147,8 @@ class TreesController extends RouteController {
       languageId: lang,
       child1: tree.options[0].text,
       child2: tree.options.length >=2 ? tree.options[1].text : null,
-      child3: tree.options.length >=3 ? tree.options[2].text : null
+      child3: tree.options.length >=3 ? tree.options[2].text : null,
+
     }).then(response)
       .catch(this.handleError);
   }
@@ -167,7 +169,8 @@ class TreesController extends RouteController {
       userId: request.auth.credentials.userId,
       child1: tree.options[0].text,
       child2: tree.options.length >=2 ? tree.options[1].text : null,
-      child3: tree.options.length >=3 ? tree.options[2].text : null
+      child3: tree.options.length >=3 ? tree.options[2].text : null,
+      styleId: request.payload.styleId
     }, {
       where: {
         id: request.params.treeId,
