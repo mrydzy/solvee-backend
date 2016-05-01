@@ -22,7 +22,7 @@ class TreesController extends RouteController {
     };
 
     if (request.query.page) {
-      // query.offset = (request.query.page - 1) * indexTreesMax;
+      query.offset = (request.query.page - 1) * indexTreesMax;
     }
 
     if (request.query.lang) {
@@ -34,7 +34,9 @@ class TreesController extends RouteController {
         languageId: request.query.lang
       }
     }
-    const trees = this.models.Tree.findAll(query);
+    const trees = this.models.Tree.findAll(query).catch((err) => {
+      console.log(err);
+    });
     response(trees);
   }
   
