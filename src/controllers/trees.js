@@ -34,7 +34,9 @@ class TreesController extends RouteController {
         languageId: request.query.lang
       }
     }
-    const trees = this.models.Tree.findAll(query);
+    const trees = this.models.Tree.findAll(query).catch((err) => {
+      console.log(err);
+    });
     response(trees);
   }
   
@@ -81,6 +83,7 @@ class TreesController extends RouteController {
     var trees = this.models.Tree.findAll(query);
     response(trees);
   }
+
   getListForCurrentUser(request, response) {
     if (!request.auth.isAuthenticated) {
       response(Boom.unauthorized());
