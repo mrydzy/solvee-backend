@@ -15,10 +15,6 @@ module.exports = {
         name: {
           type: Sequelize.STRING,
           allowNull: false
-        },
-        mainColor: {
-          type: Sequelize.STRING,
-          allowNull: false
         }
       })
     ]
