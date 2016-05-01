@@ -15,6 +15,9 @@ class TreesController extends RouteController {
       include: [{
         model: this.models.User,
         attributes: ['name']
+      }, {
+        model: this.models.Style,
+        attributes: ['name', 'id']
       }],
       attributes: ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink'],
       order: [['createdAt', 'DESC']],
@@ -71,7 +74,7 @@ class TreesController extends RouteController {
         attributes: ['id', 'name']
       }, {
         model: this.models.Style,
-        attributes: ['name']
+        attributes: ['name', 'id']
       }],
       attributes:
         ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink'],
@@ -100,6 +103,9 @@ class TreesController extends RouteController {
       include: [{
         model: this.models.User,
         attributes: ['id', 'name']
+      }, {
+        model: this.models.Style,
+        attributes: ['name', 'id']
       }],
       attributes:
         ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink'],
