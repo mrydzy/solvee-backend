@@ -19,7 +19,10 @@ function setupRoute(server, options, next) {
         validate: {
           params: Joi.object().keys({
             userId: Joi.string().required().description('User ID')
-          })
+          }),
+          query: {
+            page: Joi.number().integer().min(1).optional()
+          }
         }
       }
     },
@@ -31,7 +34,12 @@ function setupRoute(server, options, next) {
         handler: treesController.getListForCurrentUser,
         description: 'Tree list for user',
         notes: 'Return trees for user',
-        tags: ['api']
+        tags: ['api'],
+        validate: {
+          query: {
+            page: Joi.number().integer().min(1).optional()
+          }
+        }
       }
     },
     {

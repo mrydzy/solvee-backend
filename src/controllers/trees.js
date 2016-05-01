@@ -39,7 +39,7 @@ class TreesController extends RouteController {
   }
   
   getTree(request, response) {
-    const tree = this.models.Tree.findOne({
+    var query = {
       include: [{
         model: this.models.User,
         attributes: ['facebookId', 'name', 'id']
@@ -49,27 +49,36 @@ class TreesController extends RouteController {
       where: {
         id: request.params.treeId
       }
-    });
+    };
+
+    if (request.query.page) {
+      query.offset = (request.query.page - 1) * indexTreesMax;
+    }
+
+    const tree = this.models.Tree.findOne(query);
     response(tree);
   }
 
   getListForUser(request, response) {
     const userId = request.params.userId;
-    var trees = this.models.Tree.findAll(
-      {
-        include: [{
-          model: this.models.User,
-          attributes: ['id', 'name']
-        }],
-        attributes:
-          ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3'],
-        order: [['createdAt', 'DESC']],
-        limit: indexTreesMax,
-        where: {
-          userId: userId
-        }
+    var query = {
+      include: [{
+        model: this.models.User,
+        attributes: ['id', 'name']
+      }],
+      attributes:
+        ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3'],
+      order: [['createdAt', 'DESC']],
+      limit: indexTreesMax,
+      where: {
+        userId: userId
       }
-    );
+    };
+
+    if (request.query.page) {
+      query.offset = (request.query.page - 1) * indexTreesMax;
+    }
+    var trees = this.models.Tree.findAll(query);
     response(trees);
   }
   getListForCurrentUser(request, response) {
@@ -77,21 +86,25 @@ class TreesController extends RouteController {
       response(Boom.unauthorized());
     }
     const userId = request.auth.credentials.userId;
-    var trees = this.models.Tree.findAll(
-      {
-        include: [{
-          model: this.models.User,
-          attributes: ['id', 'name']
-        }],
-        attributes:
-          ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3'],
-        order: [['createdAt', 'DESC']],
-        limit: indexTreesMax,
-        where: {
-          userId: userId
-        }
+    var query = {
+      include: [{
+        model: this.models.User,
+        attributes: ['id', 'name']
+      }],
+      attributes:
+        ['id', 'name', 'languageId', [this.dbClient.fn('to_char', this.dbClient.col('Tree.createdAt'), 'HH:MI dd-MM-YY'), 'createdAt'], 'child1', 'child2', 'child3'],
+      order: [['createdAt', 'DESC']],
+      limit: indexTreesMax,
+      where: {
+        userId: userId
       }
-    );
+    };
+
+    if (request.query.page) {
+      query.offset = (request.query.page - 1) * indexTreesMax;
+    }
+
+    var trees = this.models.Tree.findAll(query);
     response(trees);
   }
 
