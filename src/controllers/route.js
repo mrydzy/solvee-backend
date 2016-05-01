@@ -10,6 +10,9 @@ class RouteController {
     this.models = dbClient.models;
     this.response = {};
   }
+  handleError(e) {
+    return console.error(e);
+  }
 }
 
 module.exports = RouteController;

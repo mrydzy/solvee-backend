@@ -34,10 +34,10 @@ class TreesController extends RouteController {
         languageId: request.query.lang
       }
     }
-    const trees = this.models.Tree.findAll(query).catch((err) => {
-      console.log(err);
-    });
-    response(trees);
+    return this.models.Tree
+      .findAll(query)
+      .then(response)
+      .catch(this.handleError);
   }
   
   getTree(request, response) {
