@@ -108,7 +108,30 @@ function setupRoute(server, options, next) {
           })
         }
       }
-    },{
+    }, {
+      method: 'PATCH',
+      path: '/trees/{treeId}',
+      config: {
+        auth: 'token',
+        handler: treesController.patchTree,
+        description: 'Update existing tree',
+        notes: 'Update tree',
+        tags: ['api'],
+        validate: {
+          params: Joi.object().keys({
+            treeId: Joi.number().integer().required().description('Tree ID')
+          }),
+          payload: Joi.object().keys({
+            name: Joi.string().optional(),
+            data: Joi.any().optional(),
+            lang: Joi.string().optional(),
+            photoLink: Joi.string().optional(),
+            styleId: Joi.string().optional(),
+            published: Joi.boolean().optional()
+          })
+        }
+      }
+    }, {
       method: 'PUT',
       path: '/trees/{treeId}',
       config: {
@@ -126,7 +149,8 @@ function setupRoute(server, options, next) {
             data: Joi.any().required(),
             lang: Joi.string().required(),
             photoLink: Joi.string().optional(),
-            styleId: Joi.string()
+            styleId: Joi.string(),
+            published: Joi.boolean()
           })
         }
       }
