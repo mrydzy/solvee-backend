@@ -10,6 +10,7 @@ class TreesController extends RouteController {
     super(server);
     this.transaction = null;
   }
+  
   index(request, response) {
     var query = {
       include: [{
@@ -21,7 +22,12 @@ class TreesController extends RouteController {
       }],
       attributes: ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink'],
       order: [['createdAt', 'DESC']],
-      limit: indexTreesMax
+      limit: indexTreesMax,
+      where: {
+        publishedAt: {
+          $ne: null
+        }
+      }
     };
 
     if (request.query.page) {
@@ -53,7 +59,7 @@ class TreesController extends RouteController {
         attributes: ['name', 'id']
       }],
       attributes:
-        ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt', 'photoLink'],
+        ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt', 'photoLink', 'publishedAt'],
       where: {
         id: request.params.treeId
       }
@@ -80,7 +86,7 @@ class TreesController extends RouteController {
         attributes: ['name', 'id']
       }],
       attributes:
-        ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink'],
+        ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink', 'publishedAt'],
       order: [['createdAt', 'DESC']],
       limit: indexTreesMax,
       where: {
@@ -111,7 +117,7 @@ class TreesController extends RouteController {
         attributes: ['name', 'id']
       }],
       attributes:
-        ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink'],
+        ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink', 'publishedAt'],
       order: [['createdAt', 'DESC']],
       limit: indexTreesMax,
       where: {
@@ -161,7 +167,8 @@ class TreesController extends RouteController {
       response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth, request needs to have correct language.'));
     }
     var tree = JSON.parse(treeData);
-    return this.models.Tree.update({
+    
+    let dataModel = {
       data: treeData,
       name: request.payload.name,
       languageId: lang,
@@ -171,7 +178,13 @@ class TreesController extends RouteController {
       child2: tree.options.length >=2 ? tree.options[1].text : null,
       child3: tree.options.length >=3 ? tree.options[2].text : null,
       styleId: request.payload.styleId
-    }, {
+    };
+
+    if (request.payload.published) {
+      dataModel.publishedAt = new Date();
+    }
+    
+    return this.models.Tree.update(dataModel, {
       where: {
         id: request.params.treeId,
         userId: request.auth.credentials.userId
@@ -179,6 +192,31 @@ class TreesController extends RouteController {
     })
       .then(response)
       .catch(this.handleError);
+  }
+
+  patchTree(request, response) {
+    let tree = request.payload;
+
+    if (tree.data && !validateTree(tree.data)) {
+      response(Boom.badRequest('Tree should have title, at least 1 node and no more that 6 levels of depth, request needs to have correct language.'));
+    }
+
+    if (tree.published != undefined) {
+      if (tree.published) {
+        tree.publishedAt = new Date();
+      } else {
+        tree.publishedAt = null;
+      }
+      delete tree.published;
+    }
+    return this.models.Tree.update(tree, {
+      where: {
+        id: request.params.treeId,
+        userId: request.auth.credentials.userId
+      }
+    }).then(response)
+      .catch(this.handleError);
+
   }
 
   remove(request, response) {

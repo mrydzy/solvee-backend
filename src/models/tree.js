@@ -7,7 +7,8 @@ function Tree(sequelize, DataTypes) {
     photoLink: DataTypes.STRING,
     child1: DataTypes.STRING,
     child2: DataTypes.STRING,
-    child3: DataTypes.STRING
+    child3: DataTypes.STRING,
+    publishedAt: DataTypes.DATE
   };
 
   const TreeModel = sequelize.define('Tree', fields, {

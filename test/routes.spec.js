@@ -28,7 +28,7 @@ describe('route: maps', () => {
   });
 
   after(() => {
-    return db.drop({cascade: true})
+    // return db.drop({cascade: true})
   });
 
 
@@ -51,6 +51,35 @@ describe('route: maps', () => {
       .then(response => {
         assert.equal(response.result.toJSON().data, sampleMap.data);
       });
+  });
+
+  it('should update and publish tree', () => {
+    const updatedMap = Object.assign({published: true}, sampleMap);
+    const url = '/trees/' + 1;
+    const optionsPUT = {method: 'PUT', url: url, payload: updatedMap, credentials: {userId}};
+    const optionsGetMap = {method: 'GET', url: url};
+    return server.inject(optionsPUT)
+      .then(response => {
+        return server.inject(optionsGetMap)
+      })
+      .then(response => {
+        assert.notEqual(response.result.publishedAt, null);
+      })
+  });
+
+  it('should unpublish tree and preserve other fields', () => {
+    const updatedMap = {published: false};
+    const url = '/trees/' + 1;
+    const optionsPATCH = {method: 'PATCH', url: url, payload: updatedMap, credentials: {userId}};
+    const optionsGetMap = {method: 'GET', url: url};
+    return server.inject(optionsPATCH)
+      .then(response => {
+        return server.inject(optionsGetMap)
+      })
+      .then(response => {
+        assert.equal(response.result.publishedAt, null);
+        assert.equal(response.result.name, 'test map');
+      })
   });
 
 });
