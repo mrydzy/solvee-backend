@@ -23,12 +23,13 @@ describe('route: maps', () => {
   before(() => {
     return Promise.all([
       db.models.Language.create({name: "Polski", shortName: "pl"}),
+      db.models.Style.create({name: "Solvee"}),
       db.models.User.create({email: 'test@gmail.com', name: 'jan kowalski', facebookId: 1234})
     ]).then(response => userId = response[1].id);
   });
 
   after(() => {
-    // return db.drop({cascade: true})
+    return db.drop({cascade: true})
   });
 
 

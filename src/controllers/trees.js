@@ -154,7 +154,7 @@ class TreesController extends RouteController {
       child1: tree.options[0].text,
       child2: tree.options.length >=2 ? tree.options[1].text : null,
       child3: tree.options.length >=3 ? tree.options[2].text : null,
-
+      styleId: styleId
     }).then(response)
       .catch(this.handleError);
   }
