@@ -60,26 +60,27 @@ class TreesController extends RouteController {
       }],
       attributes:
         ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt', 'photoLink', 'publishedAt'],
+      
     };
 
-    query.where = request.auth.credentials.userId ? {
-      $or: [
-        {
-          id: request.params.treeId,
-          userId: request.auth.credentials.userId
-        }, {
-          id: request.params.treeId,
-          publishedAt: {
-            $ne: null
-          }
-        }
-      ]
-    } : {
-      id: request.params.treeId,
-      publishedAt: {
-        $ne: null
-      }
-    };
+    // query.where = request.auth.credentials.userId ? {
+    //   $or: [
+    //     {
+    //       id: request.params.treeId,
+    //       userId: request.auth.credentials.userId
+    //     }, {
+    //       id: request.params.treeId,
+    //       publishedAt: {
+    //         $ne: null
+    //       }
+    //     }
+    //   ]
+    // } : {
+    //   id: request.params.treeId,
+    //   publishedAt: {
+    //     $ne: null
+    //   }
+    // };
 
 
     if (request.query.page) {
