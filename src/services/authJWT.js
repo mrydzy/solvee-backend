@@ -11,24 +11,28 @@ function register(server, options, next) {
   function authenticate (request, reply) {
     const authHeader = request.headers.authorization;
 
-    if (!_.isString(authHeader)) {
-      return reply(Boom.unauthorized(new Error('Missing Authorization token')));
-    }
-
-    const token = authHeader.replace('Bearer ', '');
-
     try {
+      const token = authHeader.replace('Bearer ', '');
       const credentials = verify(token);
       createUserIfNew(server, credentials)
         .then(function(createdUser) {
           credentials.userId = createdUser[0].dataValues.id;
-          return reply.continue({credentials});
+          return reply.continue({credentials, artifacts: {
+            isFullyAuthenticated: true
+          }});
         });
 
     } catch (e) {
+      if (request.auth.mode === 'optional') {
+        return reply.continue({
+          credentials : {},
+          artifacts: {
+            isFullyAuthenticated: false
+          }
+        });
+      }
       return reply(Boom.unauthorized(new Error(e.message)));
     }
-
   }
 
   server.auth.scheme('jwt', function () {

@@ -62,6 +62,10 @@ function setupRoute(server, options, next) {
       method: 'GET',
       path: '/trees/{treeId}',
       config: {
+        auth: {
+          strategy: 'token',
+          mode: 'optional'
+        },
         handler: treesController.getTree,
         description: 'Tree list',
         notes: 'Return trees',

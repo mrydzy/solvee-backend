@@ -50,7 +50,7 @@ class TreesController extends RouteController {
   }
   
   getTree(request, response) {
-    var query = {
+    let query = {
       include: [{
         model: this.models.User,
         attributes: ['facebookId', 'name', 'id']
@@ -60,10 +60,27 @@ class TreesController extends RouteController {
       }],
       attributes:
         ['id', 'data', 'name', 'languageId', 'createdAt', 'updatedAt', 'photoLink', 'publishedAt'],
-      where: {
-        id: request.params.treeId
+    };
+
+    query.where = request.auth.credentials.userId ? {
+      $or: [
+        {
+          id: request.params.treeId,
+          userId: request.auth.credentials.userId
+        }, {
+          id: request.params.treeId,
+          publishedAt: {
+            $ne: null
+          }
+        }
+      ]
+    } : {
+      id: request.params.treeId,
+      publishedAt: {
+        $ne: null
       }
     };
+
 
     if (request.query.page) {
       query.offset = (request.query.page - 1) * indexTreesMax;
@@ -90,13 +107,17 @@ class TreesController extends RouteController {
       order: [['createdAt', 'DESC']],
       limit: indexTreesMax,
       where: {
-        userId: userId
+        userId: userId,
+        publishedAt: {
+          $ne: null
+        }
       }
     };
 
     if (request.query.page) {
       query.offset = (request.query.page - 1) * indexTreesMax;
     }
+
     return this.models.Tree
       .findAll(query)
       .then(response)
