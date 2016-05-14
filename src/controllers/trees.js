@@ -20,7 +20,7 @@ class TreesController extends RouteController {
         model: this.models.Style,
         attributes: ['name', 'id']
       }],
-      attributes: ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink'],
+      attributes: ['id', 'name', 'languageId', 'createdAt', 'child1', 'child2', 'child3', 'photoLink', 'publishedAt'],
       order: [['createdAt', 'DESC']],
       limit: indexTreesMax,
       where: {
